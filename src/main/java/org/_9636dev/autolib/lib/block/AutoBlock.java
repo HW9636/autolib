@@ -1,4 +1,4 @@
-package org._9636dev.autolib.block;
+package org._9636dev.autolib.lib.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({"unused", "deprecation"})
 public abstract class AutoBlock extends BaseEntityBlock {

@@ -1,4 +1,4 @@
-package org._9636dev.autolib;
+package org._9636dev.autolib.core;
 
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;

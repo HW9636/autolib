@@ -1,4 +1,4 @@
-package org._9636dev.autolib.blockentity;
+package org._9636dev.autolib.lib.blockentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,9 +16,16 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 public abstract class AutoBlockEntity extends BlockEntity {
+
+    public final ContainerData data;
+
     public AutoBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
+
+        data = getContainerData();
     }
+
+    protected abstract ContainerData getContainerData();
 
     @Nullable
     @Override
