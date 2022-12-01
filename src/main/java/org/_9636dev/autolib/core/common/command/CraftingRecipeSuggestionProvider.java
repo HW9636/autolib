@@ -7,11 +7,13 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -23,12 +25,11 @@ public class CraftingRecipeSuggestionProvider implements SuggestionProvider<Comm
     }
 
     public Set<String> getAllResultItemIds(Level level) {
-        return level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().map(Recipe::getResultItem).map(ItemStack::toString).collect(Collectors.toUnmodifiableSet());
+        return level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().map((r) -> Objects.requireNonNull(r.getResultItem().getItem().getRegistryName()).toString()).collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        LogUtils.getLogger().info("Argument result: {}", context.getArgument("result", String.class));
         getAllResultItemIds(context.getSource().getLevel()).forEach(builder::suggest);
         return CompletableFuture.completedFuture(builder.build());
     }
