@@ -47,7 +47,7 @@ public abstract class AutoContainer extends AbstractContainerMenu {
     @Override
     public abstract boolean stillValid(@NotNull Player pPlayer);
 
-    private void moveItemToContainer(ItemStack item) {
+    protected void moveItemToContainer(ItemStack item) {
 
     }
     @Override

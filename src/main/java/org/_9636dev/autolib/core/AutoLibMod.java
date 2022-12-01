@@ -36,7 +36,9 @@ public class AutoLibMod
 
     private void processIMC(final InterModProcessEvent event)
     {
+        event.getIMCStream().forEach((message) -> {
 
+        });
     }
 
 }

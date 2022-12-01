@@ -4,11 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+import org._9636dev.autolib.lib.container.AutoContainer;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class AutoScreen<CONTAINER extends AbstractContainerMenu> extends AbstractContainerScreen<CONTAINER> {
+public class AutoScreen<CONTAINER extends AutoContainer> extends AbstractContainerScreen<CONTAINER> {
 
     public AutoScreen(CONTAINER pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
