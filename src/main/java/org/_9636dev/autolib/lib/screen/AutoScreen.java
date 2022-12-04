@@ -1,6 +1,7 @@
 package org._9636dev.autolib.lib.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,13 +15,16 @@ public class AutoScreen<CONTAINER extends AutoContainer> extends AbstractContain
         super(pMenu, pPlayerInventory, pTitle);
     }
 
-    protected boolean isIn(int x, int y, int minX, int minY, int maxX, int maxY) {
+    protected static boolean isIn(int x, int y, int minX, int minY, int maxX, int maxY) {
         return x >= minX && x <= maxX && y >= minY && y <= maxY;
     }
 
-    protected int mapNum(int pMinMapped, int pMaxMapped, int pStart, int pMax, int pCurrent) {
+    protected static int mapNum(int pMinMapped, int pMaxMapped, int pStart, int pMax, int pCurrent) {
         if (pMinMapped == pMaxMapped) return pMinMapped;
-        if (pCurrent < pStart || pCurrent > pMax) return -1; // Error
+        if (pCurrent < pStart || pCurrent > pMax) {
+            LogUtils.getLogger().warn("MapNum received unexpected value: {} (Range: {} - {})", pCurrent, pStart, pMax);
+            return -1; // Error
+        }
         return pMinMapped + (int)((pCurrent - pStart) / (double)(pMax - pStart) * (pMaxMapped - pMinMapped));
     }
 

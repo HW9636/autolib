@@ -18,12 +18,18 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AutoBlockEntity extends BlockEntity {
 
     public final ContainerData data;
+    protected int sidesConfig;
 
     public AutoBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
 
         data = getContainerData();
+        sidesConfig = getDefaultSides();
     }
+
+    public abstract void changeSides(int oldSize, int newSides);
+
+    protected abstract int getDefaultSides();
 
     protected abstract ContainerData getContainerData();
 
@@ -50,19 +56,34 @@ public abstract class AutoBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected abstract void saveAdditional(@NotNull CompoundTag tag);
+    protected void saveAdditional(@NotNull CompoundTag pTag) {
+        super.saveAdditional(pTag);
+    }
 
     @Override
-    public abstract void load(@NotNull CompoundTag tag);
+    public void load(@NotNull CompoundTag pTag) {
+        super.load(pTag);
+    }
+
+    public static int getSide(int sidesConfig, Direction side) {
+        return switch (side) {
+            case UP -> (sidesConfig >> 20) & 15;
+            case DOWN ->  (sidesConfig >> 16) & 15;
+            case NORTH ->  (sidesConfig >> 12) & 15;
+            case EAST -> (sidesConfig >> 8) & 15;
+            case SOUTH -> (sidesConfig >> 4) & 15;
+            case WEST -> sidesConfig & 15;
+        };
+    }
 
     public static int setSide(Direction dir, int value, int sidesConfig) {
         return switch (dir) {
-            case UP -> (sidesConfig & 0x3FF) | (value << 10); // 2 ^ 10
-            case DOWN -> (sidesConfig & 0xCFF) | (value << 8); // 2 ^ 8
-            case NORTH -> (sidesConfig & 0xF3F) | (value << 6); // 2 ^ 6
-            case EAST -> (sidesConfig & 0xFCF) | (value << 4); // 2 ^ 4
-            case SOUTH -> (sidesConfig & 0xFF3) | (value << 2);
-            case WEST -> (sidesConfig & 0xFFC) | value;
+            case UP -> (sidesConfig & 0x0FFFFF) | (value << 20); // 2 ^ 10
+            case DOWN -> (sidesConfig & 0xF0FFFF) | (value << 16); // 2 ^ 8
+            case NORTH -> (sidesConfig & 0xFF0FFF) | (value << 12); // 2 ^ 6
+            case EAST -> (sidesConfig & 0xFFF0FF) | (value << 8); // 2 ^ 4
+            case SOUTH -> (sidesConfig & 0xFFFF0F) | (value << 4);
+            case WEST -> (sidesConfig & 0xFFFFF0) | value;
         };
     }
 
@@ -75,6 +96,4 @@ public abstract class AutoBlockEntity extends BlockEntity {
         if (this.level != null)
             this.level.setBlockAndUpdate(this.worldPosition, getBlockState());
     }
-
-    protected abstract ContainerData getData();
 }

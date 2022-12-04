@@ -18,9 +18,6 @@ public abstract class AutoContainer extends AbstractContainerMenu {
 
     public final ContainerLevelAccess containerAccess;
     public final ContainerData data;
-    public AutoContainer(@NotNull MenuType<?> pMenuType, int pContainerId, Inventory pPlayerInv, ContainerData containerData) {
-        this(pMenuType, pContainerId, pPlayerInv, BlockPos.ZERO, containerData);
-    }
 
     public AutoContainer(@NotNull MenuType<?> pMenuType, int pContainerId, Inventory pPlayerInv, BlockPos pBlocKPos,
                          ContainerData pContainerData) {
@@ -31,6 +28,9 @@ public abstract class AutoContainer extends AbstractContainerMenu {
 
         addDataSlots(data);
     }
+
+    @Override
+    public abstract boolean clickMenuButton(@NotNull Player pPlayer, int pId);
 
     protected void addInventorySlots(Inventory pPlayerInv) {
         for(int i = 0; i < 3; ++i) {
