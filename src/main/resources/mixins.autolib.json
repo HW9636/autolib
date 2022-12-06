@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "org._9636dev.autolib.core.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+
+  ],
+  "client": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

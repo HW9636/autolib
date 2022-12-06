@@ -2,6 +2,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 
@@ -12,9 +13,11 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.0'
-group = 'org._9636dev.autolib'
+version = '1.18.2-1.0.1-forge'
+group = 'org._9636dev'
+//noinspection GroovyUnusedAssignment
 archivesBaseName = 'autolib'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -114,6 +117,16 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+
+}
+
+
+mixin {
+    add sourceSets.main, 'mixins.autolib.refmap.json'
+    config 'mixins.autolib.json'
+
+    debug.verbose = true
+    debug.export = true
 }
 
 jar.finalizedBy('reobfJar')
@@ -124,10 +137,15 @@ publishing {
             artifact jar
         }
     }
+
     repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
+        /* maven {
+            url 'https://repsy.io/mvn/9636dev/mod/'
+            credentials {
+                username MavenUser
+                password MavenPass
+            }
+        } */
     }
 }
 
